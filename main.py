@@ -18,6 +18,11 @@ def body():
     text_back = f1.render('Назад', True, (180, 0, 0))
     text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
 
+    def read_q(i):
+        with open("questions.txt", "r") as f:
+            text = f.readlines()
+            return text[i - 1]
+
     class Button:
         def __init__(self, width, height):
             self.width = width
@@ -74,7 +79,7 @@ def body():
     button_next = Button(150, 60)
     button_back = Button(150, 60)
     #button_cheek = Button(150, 60)
-    input_1 = InputBox(850, 200, 100, 50)
+    input_1 = InputBox(850, 300, 100, 50)
     while True:
         clock_fps.tick(FPS)
 
@@ -93,7 +98,7 @@ def body():
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
         #button_cheek.draw(600, 500)
-        pygame.draw.rect(screen, (255,191,0), (100, 100, 700, 300))
+        pygame.draw.rect(screen, (255, 191, 0), (100, 100, 700, 300))
         screen.blit(text_list, (850, 100) )
         screen.blit(text_next, (1100, 630))
         screen.blit(text_back, (70, 630))
