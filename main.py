@@ -52,7 +52,7 @@ def body():
                     self.active = not self.active
                 else:
                     self.active = False
-                self.color = (165, 45, 34) if self.active else (34, 65, 200)
+                self.color = (30, 155, 34) if self.active else (34, 65, 200)
             if event.type == pygame.KEYDOWN:
                 if self.active:
                     if event.key == pygame.K_RETURN:
@@ -74,7 +74,7 @@ def body():
     button_next = Button(150, 60)
     button_back = Button(150, 60)
     #button_cheek = Button(150, 60)
-    input_1 = InputBox(850, 200, 150, 50)
+    input_1 = InputBox(850, 200, 100, 50)
     while True:
         clock_fps.tick(FPS)
 
