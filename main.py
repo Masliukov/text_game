@@ -39,7 +39,8 @@ def body():
 
 
     class Button:
-        def __init__(self, width, height):
+        def __init__(self, width, height, name="default"):
+            self.name = name
             self.width = width
             self.height = height
             self.activ_color = (255, 220, 115)
@@ -57,7 +58,8 @@ def body():
                 if click[0] == 1:
                     pygame.time.delay(150)
                     print("pressed")
-                    Button.count += 1
+                    if self.name == "next":
+                        Button.count += 1
 
 
             else:
@@ -98,7 +100,7 @@ def body():
             screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
             pygame.draw.rect(screen, self.color, self.rect, 2)
 
-    button_next = Button(150, 60)
+    button_next = Button(150, 60, "next")
     button_back = Button(150, 60)
     #button_cheek = Button(150, 60)
     input_1 = InputBox(850, 320, 100, 50)
