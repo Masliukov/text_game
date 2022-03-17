@@ -57,10 +57,11 @@ def body():
                 pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
                 if click[0] == 1:
                     pygame.time.delay(150)
-                    print("pressed")
+                    print("pressed", Button.count)
                     if self.name == "next":
-                        Button.count += 1
-
+                        Button.count += 2
+                    elif self.name == "back":
+                        Button.count -= 2
 
             else:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
@@ -101,7 +102,7 @@ def body():
             pygame.draw.rect(screen, self.color, self.rect, 2)
 
     button_next = Button(150, 60, "next")
-    button_back = Button(150, 60)
+    button_back = Button(150, 60, "back")
     #button_cheek = Button(150, 60)
     input_1 = InputBox(850, 320, 100, 50)
 
