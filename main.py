@@ -25,7 +25,6 @@ def body():
     text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
 
 
-    count = 1
 
     def read_q(i):
         with open("questions.txt", "r") as f:
@@ -39,25 +38,28 @@ def body():
         screen.blit(surface1, (100, 100))
 
 
-
     class Button:
-        global count
         def __init__(self, width, height):
             self.width = width
             self.height = height
             self.activ_color = (255, 220, 115)
             self.inactiv_color = (255, 207, 64)
 
+        count = 1
+
         def draw(self, x, y):
             global count
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
+            draw_question(self.count)
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
                 if click[0] == 1:
                     pygame.time.delay(150)
                     print("pressed")
-                    count += 1
+                    Button.count += 1
+
+
             else:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
                 pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
@@ -100,6 +102,7 @@ def body():
     button_back = Button(150, 60)
     #button_cheek = Button(150, 60)
     input_1 = InputBox(850, 320, 100, 50)
+
     while True:
         clock_fps.tick(FPS)
 
@@ -116,7 +119,7 @@ def body():
         #surface1.fill((255, 191, 0))
         #screen.blit(surface1, (100,  100))
         # screen.blit(background, (0, 0))
-        draw_question(count)
+        #draw_question()
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
         #button_cheek.draw(600, 500)
