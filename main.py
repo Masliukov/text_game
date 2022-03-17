@@ -82,7 +82,7 @@ def body():
                     self.active = not self.active
                 else:
                     self.active = False
-                self.color = (30, 155, 34) if self.active else (34, 65, 200)
+                self.color = (47, 245, 152) if self.active else (34, 65, 200)
             if event.type == pygame.KEYDOWN:
                 if self.active:
                     if event.key == pygame.K_RETURN:
