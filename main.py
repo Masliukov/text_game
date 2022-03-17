@@ -6,25 +6,42 @@ def body():
     display_width = 1280
     display_height = 720
     clock_fps = pygame.time.Clock()
+
     screen = pygame.display.set_mode((display_width, display_height))
     screen.fill((166, 124, 0))
     pygame.display.set_caption("MasClick")
+    surface1 = pygame.Surface((700, 300))
+
     FPS = 30
-    background_load = pygame.image.load("mikroshema_shemy_chb_126894_1600x1200.jpg")
-    bg_1 = background_load.convert_alpha()
-    background = pygame.transform.smoothscale(bg_1, screen.get_size())
+
+    #background_load = pygame.image.load("mikroshema_shemy_chb_126894_1600x1200.jpg")
+    #bg_1 = background_load.convert_alpha()
+    #background = pygame.transform.smoothscale(bg_1, screen.get_size())
+
     f1 = pygame.font.Font('FiraCode-Medium.ttf', 36)
     text_next = f1.render('Далее', True, (180, 0, 0))
     text_back = f1.render('Назад', True, (180, 0, 0))
     text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
     text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
 
+
+    count = 1
+
     def read_q(i):
         with open("questions.txt", "r") as f:
             text = f.readlines()
             return text[i - 1]
 
+    def draw_question(number):
+        text_question = f1.render(read_q(number), True, (180, 0, 0))
+        surface1.fill((255, 191, 0))
+        surface1.blit(text_question, (100, 100))
+        screen.blit(surface1, (100, 100))
+
+
+
     class Button:
+        global count
         def __init__(self, width, height):
             self.width = width
             self.height = height
@@ -32,6 +49,7 @@ def body():
             self.inactiv_color = (255, 207, 64)
 
         def draw(self, x, y):
+            global count
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
@@ -39,6 +57,7 @@ def body():
                 if click[0] == 1:
                     pygame.time.delay(150)
                     print("pressed")
+                    count += 1
             else:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
                 pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
@@ -94,12 +113,14 @@ def body():
         input_1.update()
 
         screen.fill((166, 124, 0))
-
+        #surface1.fill((255, 191, 0))
+        #screen.blit(surface1, (100,  100))
         # screen.blit(background, (0, 0))
+        draw_question(count)
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
         #button_cheek.draw(600, 500)
-        pygame.draw.rect(screen, (255, 191, 0), (100, 100, 700, 300))
+        #pygame.draw.rect(screen, (255, 191, 0), (100, 100, 700, 300))
         screen.blit(text_list, (850, 100) )
         screen.blit(text_next, (1100, 630))
         screen.blit(text_back, (70, 630))
