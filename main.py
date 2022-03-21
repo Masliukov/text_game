@@ -8,7 +8,6 @@ def body():
     clock_fps = pygame.time.Clock()
 
     screen = pygame.display.set_mode((display_width, display_height))
-    screen.fill((166, 124, 0))
     pygame.display.set_caption("MasClick")
     surface1 = pygame.Surface((700, 300))
 
@@ -23,6 +22,7 @@ def body():
     text_back = f1.render('Назад', True, (180, 0, 0))
     text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
     text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
+    text_check = f1.render("Ответить", True, (180, 0, 0))
 
 
 
@@ -62,6 +62,8 @@ def body():
                         Button.count += 2
                     elif self.name == "back":
                         Button.count -= 2
+                    elif self.name == "answer":
+                        print("answer")
 
             else:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
@@ -87,7 +89,7 @@ def body():
                 if self.active:
                     if event.key == pygame.K_RETURN:
                         print(self.text)
-                        self.text = ''
+                        #self.text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         self.text = self.text[:-1]
                     else:
@@ -103,7 +105,7 @@ def body():
 
     button_next = Button(150, 60, "next")
     button_back = Button(150, 60, "back")
-    #button_cheek = Button(150, 60)
+    button_cheek = Button(200, 60, "answer")
     input_1 = InputBox(850, 320, 100, 50)
 
     while True:
@@ -125,12 +127,12 @@ def body():
         #draw_question()
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
-        #button_cheek.draw(600, 500)
-        #pygame.draw.rect(screen, (255, 191, 0), (100, 100, 700, 300))
+        button_cheek.draw(850, 400)
         screen.blit(text_list, (850, 100) )
         screen.blit(text_next, (1100, 630))
         screen.blit(text_back, (70, 630))
         screen.blit(text_answer, (850, 250))
+        screen.blit(text_check, (860, 410))
         input_1.draw(screen)
         pygame.display.update()
 
