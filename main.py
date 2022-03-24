@@ -37,6 +37,9 @@ def body():
         surface1.blit(text_question, (100, 100))
         screen.blit(surface1, (100, 100))
 
+    def check():
+        if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
+            print("OK")
 
     class Button:
         def __init__(self, width, height, name="default"):
@@ -63,7 +66,9 @@ def body():
                     elif self.name == "back":
                         Button.count -= 2
                     elif self.name == "answer":
-                        print("answer")
+                        print("answer", input_1.text)
+                        check()
+
 
             else:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
@@ -89,6 +94,7 @@ def body():
                 if self.active:
                     if event.key == pygame.K_RETURN:
                         print(self.text)
+                        check()
                         #self.text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         self.text = self.text[:-1]
