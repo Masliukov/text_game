@@ -17,7 +17,8 @@ def body():
     #bg_1 = background_load.convert_alpha()
     #background = pygame.transform.smoothscale(bg_1, screen.get_size())
 
-    f1 = pygame.font.Font('FiraCode-Medium.ttf', 36)
+    f1 = pygame.font.Font(None, 36)
+    f2 = pygame.font.Font(None, 30)
     text_next = f1.render('Далее', True, (180, 0, 0))
     text_back = f1.render('Назад', True, (180, 0, 0))
     text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
@@ -32,7 +33,7 @@ def body():
             return text[i - 1]
 
     def draw_question(number):
-        text_question = f1.render(read_q(number), True, (180, 0, 0))
+        text_question = f2.render(read_q(number), True, (180, 0, 0))
         surface1.fill((255, 191, 0))
         surface1.blit(text_question, (100, 100))
         screen.blit(surface1, (100, 100))
@@ -62,9 +63,21 @@ def body():
                     pygame.time.delay(150)
                     print("pressed", Button.count)
                     if self.name == "next":
-                        Button.count += 2
+                        if Button.count + 2 <= 20:
+                            Button.count += 2
+                            input_1.text = ""
+                            print(input_1.text)
+                        else:
+                            print("что то не так")
+                        print(Button.count)
+
                     elif self.name == "back":
-                        Button.count -= 2
+                        if Button.count - 2 < 0:
+                            print("что то не так")
+                        else:
+                            Button.count -= 2
+                        print(Button.count)
+
                     elif self.name == "answer":
                         print("answer", input_1.text)
                         check()
@@ -95,7 +108,7 @@ def body():
                     if event.key == pygame.K_RETURN:
                         print(self.text)
                         check()
-                        #self.text = ''
+                        self.text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         self.text = self.text[:-1]
                     else:
