@@ -26,11 +26,10 @@ def body():
     text_check = f1.render("Ответить", True, (180, 0, 0))
 
 
-
     def read_q(i):
         with open("questions.txt", "r") as f:
             text = f.readlines()
-            return text[i - 1]
+            return text[i - 1].strip()
 
     def draw_question(number):
         text_question = f2.render(read_q(number), True, (180, 0, 0))
@@ -41,6 +40,13 @@ def body():
     def check():
         if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
             print("OK")
+            Button.score += 1
+
+    def score(i):
+        text_score = f2.render(f"Ваш счет: {i}", True, (180, 0, 0))
+        screen.blit(text_score, (100, 50))
+
+
 
     class Button:
         def __init__(self, width, height, name="default"):
@@ -51,7 +57,7 @@ def body():
             self.inactiv_color = (255, 207, 64)
 
         count = 1
-
+        score = 0
         def draw(self, x, y):
             global count
             mouse = pygame.mouse.get_pos()
@@ -66,7 +72,6 @@ def body():
                         if Button.count + 2 <= 20:
                             Button.count += 2
                             input_1.text = ""
-                            print(input_1.text)
                         else:
                             print("что то не так")
                         print(Button.count)
@@ -142,19 +147,20 @@ def body():
         screen.fill((166, 124, 0))
         #surface1.fill((255, 191, 0))
         #screen.blit(surface1, (100,  100))
-        # screen.blit(background, (0, 0))
-        #draw_question()
+        #screen.blit(background, (0, 0))
+
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
         button_cheek.draw(850, 400)
-        screen.blit(text_list, (850, 100) )
+        screen.blit(text_list, (850, 100))
         screen.blit(text_next, (1100, 630))
         screen.blit(text_back, (70, 630))
         screen.blit(text_answer, (850, 250))
         screen.blit(text_check, (860, 410))
         input_1.draw(screen)
-        pygame.display.update()
+        score(Button.score)
 
+        pygame.display.update()
 
 if __name__ == '__main__':
     body()
