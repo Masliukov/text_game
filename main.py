@@ -25,11 +25,22 @@ def body():
     text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
     text_check = f1.render("Ответить", True, (180, 0, 0))
 
+    def list_questions():
+        pass
+
+    def count_lines(filename, chunk_size=1 << 13):
+        with open(filename) as file:
+            return sum(chunk.count('\n')
+                       for chunk in iter(lambda: file.read(chunk_size), ''))
 
     def read_q(i):
         with open("questions.txt", "r") as f:
             text = f.readlines()
-            return text[i - 1].strip()
+            try:
+                return text[i - 1].strip()
+            except:
+                print("Error")
+
 
     def draw_question(number):
         text_question = f2.render(read_q(number), True, (180, 0, 0))
@@ -69,7 +80,7 @@ def body():
                     pygame.time.delay(150)
                     print("pressed", Button.count)
                     if self.name == "next":
-                        if Button.count + 2 <= 20:
+                        if Button.count + 2 <= int(count_lines("questions.txt")):
                             Button.count += 2
                             input_1.text = ""
                         else:
