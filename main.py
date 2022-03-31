@@ -25,8 +25,9 @@ def body():
     text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
     text_check = f1.render("Ответить", True, (180, 0, 0))
 
-    def list_questions():
-        pass
+    def list_questions_text(i):
+        text_ost = f1.render(f"{i}", True, (180, 0, 0))
+        screen.blit(text_ost, (950, 160))
 
     def count_lines(filename, chunk_size=1 << 13):
         with open(filename) as file:
@@ -49,14 +50,31 @@ def body():
         screen.blit(surface1, (100, 100))
 
     def check():
-        if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
-            print("OK")
-            Button.score += 1
+        if "-" == Button.questions_list_answer[Button.count - 1]:
+            if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
+                print("OK")
+
+                Button.score += 1
+                Button.questions_list_answer[Button.count - 1] = "+"
+        else:
+            print("Вы уже ответили на этот вопрос")
 
     def score(i):
         text_score = f2.render(f"Ваш счет: {i}", True, (180, 0, 0))
         screen.blit(text_score, (100, 50))
 
+    def l_q():
+
+        for i in range(count_lines("questions.txt")):
+            Button.questions_list_answer.append("-")
+        print(Button.questions_list_answer)
+
+    def l_n():
+        for i in Button.questions_list_answer:
+            if i == "-":
+                Button.question_n += 1
+        return Button.question_n
+        Button.question_n = 0
 
 
     class Button:
@@ -69,11 +87,14 @@ def body():
 
         count = 1
         score = 0
+        questions_list_answer = []
+        question_n = 0
         def draw(self, x, y):
-            global count
+            global count, question_n
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             draw_question(self.count)
+            list_questions_text(count_lines("questions.txt") - Button.score)
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
                 if click[0] == 1:
@@ -143,6 +164,7 @@ def body():
     button_cheek = Button(200, 60, "answer")
     input_1 = InputBox(850, 320, 100, 50)
 
+    l_q()
     while True:
         clock_fps.tick(FPS)
 
