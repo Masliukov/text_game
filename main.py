@@ -53,10 +53,13 @@ def body():
         if "-" == Button.questions_list_answer[Button.count - 1]:
             if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
                 print("OK")
-
+                Button.TF = True
                 Button.score += 1
                 Button.questions_list_answer[Button.count - 1] = "+"
+            else:
+                Button.TF = False
         else:
+            Button.TF = "+"
             print("Вы уже ответили на этот вопрос")
 
     def score(i):
@@ -69,12 +72,17 @@ def body():
             Button.questions_list_answer.append("-")
         print(Button.questions_list_answer)
 
-    def l_n():
-        for i in Button.questions_list_answer:
-            if i == "-":
-                Button.question_n += 1
-        return Button.question_n
-        Button.question_n = 0
+    def test_func(i):
+        result = f1.render(f"{i}", True, (180, 0, 0))
+        screen.blit(result, (1090, 330))
+
+    def an_is_FT():
+        if Button.TF == True:
+            test_func("Ok")
+        elif Button.TF == False:
+            test_func("Error")
+        elif Button.TF == "+":
+            test_func("Уже ответили")
 
 
     class Button:
@@ -85,22 +93,23 @@ def body():
             self.activ_color = (255, 220, 115)
             self.inactiv_color = (255, 207, 64)
 
+        TF = None
         count = 1
         score = 0
         questions_list_answer = []
-        question_n = 0
         def draw(self, x, y):
             global count, question_n
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
             draw_question(self.count)
-            list_questions_text(count_lines("questions.txt") - Button.score)
+            list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
                 if click[0] == 1:
                     pygame.time.delay(150)
                     print("pressed", Button.count)
                     if self.name == "next":
+                        Button.TF = None
                         if Button.count + 2 <= int(count_lines("questions.txt")):
                             Button.count += 2
                             input_1.text = ""
@@ -109,6 +118,7 @@ def body():
                         print(Button.count)
 
                     elif self.name == "back":
+                        Button.TF = None
                         if Button.count - 2 < 0:
                             print("что то не так")
                         else:
@@ -116,6 +126,7 @@ def body():
                         print(Button.count)
 
                     elif self.name == "answer":
+                        Button.TF = None
                         print("answer", input_1.text)
                         check()
 
@@ -186,12 +197,13 @@ def body():
         button_back.draw(50, 620)
         button_cheek.draw(850, 400)
         screen.blit(text_list, (850, 100))
-        screen.blit(text_next, (1100, 630))
-        screen.blit(text_back, (70, 630))
+        screen.blit(text_next, (1110, 635))
+        screen.blit(text_back, (85, 635))
         screen.blit(text_answer, (850, 250))
-        screen.blit(text_check, (860, 410))
+        screen.blit(text_check, (895, 415))
         input_1.draw(screen)
         score(Button.score)
+        an_is_FT()
 
         pygame.display.update()
 
