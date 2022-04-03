@@ -30,12 +30,12 @@ def body():
         screen.blit(text_ost, (950, 160))
 
     def count_lines(filename, chunk_size=1 << 13):
-        with open(filename) as file:
+        with open(filename, encoding="UTF8", errors="ignor") as file:
             return sum(chunk.count('\n')
                        for chunk in iter(lambda: file.read(chunk_size), ''))
 
     def read_q(i):
-        with open("questions.txt", "r") as f:
+        with open("questions.txt", "r", encoding="UTF8", errors="ignor") as f:
             text = f.readlines()
             try:
                 return text[i - 1].strip()
