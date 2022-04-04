@@ -10,6 +10,7 @@ def body():
     screen = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption("MasClick")
     surface1 = pygame.Surface((700, 300))
+    surface2 = pygame.Surface((display_width/2, display_height/2))
 
     FPS = 30
 
@@ -41,7 +42,6 @@ def body():
                 return text[i - 1].strip()
             except:
                 print("Error")
-
 
     def draw_question(number):
         text_question = f2.render(read_q(number), True, (180, 0, 0))
@@ -84,6 +84,28 @@ def body():
         elif Button.TF == "+":
             test_func("Уже ответили")
 
+    def draw_FT_answer():
+        x = 350
+        y = 30
+        GREEN = (50, 180, 30)
+        RED = (180, 40, 15)
+        count = 1
+        for i in Button.questions_list_answer:
+            if count % 2 == 1:
+                if i == "+":
+                    pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
+                    pygame.draw.rect(screen, GREEN, (x+3, y+3, 44, 44), 0)
+                elif i == "-":
+                    pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
+                x += 50
+            count += 1
+
+    def blit_t():
+        l = int(count_lines("questions.txt") / 2 - Button.score)
+        if l == 0:
+            pygame.draw.rect(screen, (20, 170, 20), (280, 180, 700, 300), 0)
+            text_win = f1.render("Вы успешно прошли тест", True, (180, 10, 90))
+            screen.blit(text_win, (450, 300))
 
     class Button:
         def __init__(self, width, height, name="default"):
@@ -204,6 +226,8 @@ def body():
         input_1.draw(screen)
         score(Button.score)
         an_is_FT()
+        draw_FT_answer()
+        blit_t()
 
         pygame.display.update()
 
