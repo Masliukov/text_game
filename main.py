@@ -8,10 +8,8 @@ def body():
     clock_fps = pygame.time.Clock()
 
     screen = pygame.display.set_mode((display_width, display_height))
-    pygame.display.set_caption("MasClick")
+    pygame.display.set_caption("ПрофТест")
     surface1 = pygame.Surface((700, 300))
-    surface2 = pygame.Surface((display_width/2, display_height/2))
-
     FPS = 30
 
     #background_load = pygame.image.load("mikroshema_shemy_chb_126894_1600x1200.jpg")
