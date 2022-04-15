@@ -22,6 +22,10 @@ def body():
     bg_1 = background_load.convert_alpha()
     background2 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
+    background_load = pygame.image.load("1625573753_4-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-4.jpg")
+    bg_1 = background_load.convert_alpha()
+    background3 = pygame.transform.smoothscale(bg_1, screen.get_size())
+
     icon_back = pygame.image.load("icons8-стрелка-влево-в-круге-64.png")
     icon_mozg = pygame.image.load('icons8-мозги-32.png')
     icon_cofee = pygame.image.load('icons8-логотип-java-coffee-cup-33.png')
@@ -30,9 +34,10 @@ def body():
     icon_github = pygame.image.load('icons8-квадрат-github-50.png')
     icon_github_m = pygame.image.load('icons8-github-100.png')
     icon_pdf = pygame.image.load('icons8-pdf-100.png')
-
-
-
+    icon_eth = pygame.image.load('icons8-ethereum-100.png')
+    icon_bit = pygame.image.load('icons8-биткоин-100.png')
+    qr_bit = pygame.image.load('bit.png')
+    qr_eth = pygame.image.load('eth.png')
 
 
     f1 = pygame.font.Font(None, 36)
@@ -178,6 +183,8 @@ def body():
                         Button.now_s = 'infa'
                     elif self.name == 'link':
                         webbrowser.open('https://github.com/Masliukov/text_game', new=2)
+                    elif self.name == 'donat':
+                        Button.now_s = 'donat'
 
 
             else:
@@ -281,6 +288,21 @@ def body():
             screen.blit(i, (150, y))
             y += 50
 
+
+    text_eth = f1.render('0xdF4Ff18541bF13A64Ec5Ce3e3ea2e5615504B58C', True, (185, 255, 210))
+    text_bit = f1.render('1Fc8vKzMnHcgtr6mXRQ572jyBNWTpjRwRk', True, (185, 255, 210))
+
+    def donat():
+        screen.blit(background3, (0, 0))
+        screen.blit(icon_eth, (100, 140))
+        screen.blit(text_eth, (220, 180))
+        screen.blit(icon_bit, (100, 270))
+        screen.blit(text_bit, (220, 310))
+        screen.blit(qr_bit, (250, 470))
+        screen.blit(qr_eth, (500, 470))
+
+
+
     button_beg = Button(290, 50, 'beg')
     button_donat = Button(345, 50, 'donat')
     button_infa = Button(170, 50, 'infa')
@@ -339,6 +361,8 @@ def body():
             test()
         elif Button.now_s == 'infa':
             infa_project()
+        elif Button.now_s == 'donat':
+            donat()
 
         screen.blit(icon_back, (30, 30))
         button_exit.draw(30, 30)
