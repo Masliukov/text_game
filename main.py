@@ -1,4 +1,6 @@
 import pygame
+import webbrowser
+import sys
 
 
 def body():
@@ -12,13 +14,26 @@ def body():
     surface1 = pygame.Surface((700, 300))
     FPS = 30
 
-    background_load = pygame.image.load("vetka_minimalizm_chb_125024_1600x1200.jpg")
+    background_load = pygame.image.load("1625573764_13-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-13.png")
     bg_1 = background_load.convert_alpha()
     background = pygame.transform.smoothscale(bg_1, screen.get_size())
 
-    background_load = pygame.image.load("kabeli_provoda_podsvetka_130357_1920x1080.jpg")
+    background_load = pygame.image.load("1625573749_17-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-17.png")
     bg_1 = background_load.convert_alpha()
     background2 = pygame.transform.smoothscale(bg_1, screen.get_size())
+
+    icon_back = pygame.image.load("icons8-стрелка-влево-в-круге-64.png")
+    icon_mozg = pygame.image.load('icons8-мозги-32.png')
+    icon_cofee = pygame.image.load('icons8-логотип-java-coffee-cup-33.png')
+    icon_info = pygame.image.load('icons8-информация-32(1).png')
+    icon_test = pygame.image.load('icons8-тест-32.png')
+    icon_github = pygame.image.load('icons8-квадрат-github-50.png')
+    icon_github_m = pygame.image.load('icons8-github-100.png')
+    icon_pdf = pygame.image.load('icons8-pdf-100.png')
+
+
+
+
 
     f1 = pygame.font.Font(None, 36)
     f2 = pygame.font.Font(None, 30)
@@ -38,16 +53,8 @@ def body():
             return sum(chunk.count('\n')
                        for chunk in iter(lambda: file.read(chunk_size), ''))
 
-    def read_q(i):
-        with open("questions.txt", "r", encoding="UTF8", errors="ignor") as f:
-            text = f.readlines()
-            try:
-                return text[i - 1].strip()
-            except:
-                print("Error")
-
-    def read_q_i(i):
-        with open("infa.txt", "r", encoding="UTF8", errors="ignor") as f:
+    def read_q(i, file='questions.txt'):
+        with open(file, "r", encoding="UTF8", errors="ignor") as f:
             text = f.readlines()
             try:
                 return text[i - 1].strip()
@@ -139,7 +146,8 @@ def body():
             #draw_question(self.count)
             #list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
-                pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
+                pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
+
                 if click[0] == 1:
                     pygame.time.delay(150)
                     print("pressed", Button.count)
@@ -166,11 +174,34 @@ def body():
                         check()
                     elif self.name == 'beg':
                         Button.now_s = 'test'
+                    elif self.name == 'infa':
+                        Button.now_s = 'infa'
+                    elif self.name == 'link':
+                        webbrowser.open('https://github.com/Masliukov/text_game', new=2)
 
 
             else:
-                pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height))
-                pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
+                pass
+                #pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
+                #pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
+
+    class Button_child(Button):
+        def draw(self, x, y):
+            mouse = pygame.mouse.get_pos()
+            click = pygame.mouse.get_pressed()
+            if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
+                if click[0] == 1:
+                    pygame.time.delay(150)
+                    print("pressed", Button.count)
+
+                    if self.name == 'exit':
+                        if Button.now_s == 'menu':
+                            sys.exit()
+                        Button.now_s = 'menu'
+                    elif self.name == 'link':
+                        webbrowser.open('https://github.com/Masliukov/text_game', new=2)
+                    elif self.name == 'pdf':
+                        webbrowser.open('https://doc.lagout.org/operating%20system%20/linux/Nemet.pdf', new=2)
 
     class InputBox:
 
@@ -234,38 +265,60 @@ def body():
         draw_question(Button.count)
         list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
 
-    button_beg = Button(250, 50, 'beg')
-    button_donat = Button(180, 50, 'donat')
-
-
-    def menu():
+    button_link = Button(398, 25, 'link')
+    f = 'infa.txt'
+    def infa_project():
         screen.blit(background2, (0, 0))
-
-        text_beg = f3.render('Начать тест', True, (180, 0, 0))
-        text_donat = f3.render('Донат', True, (180, 0, 0))
-
-        button_beg.draw(900, 350)
-        button_donat.draw(970, 450)
-
-        screen.blit(text_beg, (935, 360))
-        screen.blit(text_donat, (1005, 460))
-
-        pygame.draw.rect(screen, (102, 178, 178), (100, 100, 600, 500))
-        pygame.draw.rect(screen, (120, 145, 190), (105, 105, 590, 490))
-
+        button_link.draw(148, 498)
         y = 150
         text = []
-        print(count_lines('infa.txt'))
+        pygame.draw.rect(screen, (185, 255, 210), (100, 100, 500, 500), 1)
+        screen.blit(icon_github, (320, 533))
         for i in range(1, count_lines('infa.txt') + 1):
-            text.append(f2.render(f'{read_q_i(i)}', True, (180, 0, 0)))
+            text.append(f2.render(f'{read_q(i, f)}', True, (185, 255, 210)))
 
         for i in text:
             screen.blit(i, (150, y))
             y += 50
 
+    button_beg = Button(290, 50, 'beg')
+    button_donat = Button(345, 50, 'donat')
+    button_infa = Button(170, 50, 'infa')
+    button_teoria = Button(250, 50, 'teoria')
+
+    text_beg = f3.render('Проверить знания', True, (185, 255, 210))
+    text_donat = f3.render('Купить авторам кофе', True, (234, 255, 242))
+    text_infa = f3.render('О проекте', True, (234, 255, 242))
+    text_teoria = f3.render('Начать изучать', True, (185, 255, 210))
 
 
+    button_git = Button_child(100, 100, 'link')
+    button_pdf = Button_child(100, 100, 'pdf')
+    def menu():
+        screen.blit(background2, (0, 0))
 
+        button_teoria.draw(80, 220)
+        button_beg.draw(80, 320)
+        button_donat.draw(80, 450)
+        button_infa.draw(80, 550)
+
+        screen.blit(text_beg, (90, 330))
+        screen.blit(text_donat, (90, 460))
+        screen.blit(text_infa, (90, 560))
+        screen.blit(text_teoria, (90, 230))
+
+        screen.blit(icon_mozg, (30, 226))
+        screen.blit(icon_test, (30, 328))
+        screen.blit(icon_cofee, (30, 455))
+        screen.blit(icon_info, (31, 557))
+        screen.blit(icon_github_m, (500, 580))
+        screen.blit(icon_pdf, (650, 580))
+
+        button_git.draw(500, 580)
+        button_pdf.draw(650, 580)
+
+
+    button_exit = Button_child(64, 64, 'exit')
 
     l_q()
     while True:
@@ -284,6 +337,11 @@ def body():
             menu()
         elif Button.now_s == 'test':
             test()
+        elif Button.now_s == 'infa':
+            infa_project()
+
+        screen.blit(icon_back, (30, 30))
+        button_exit.draw(30, 30)
 
         pygame.display.update()
 
