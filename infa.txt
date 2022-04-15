@@ -1,0 +1,9 @@
+Ver. 0.14 beta
+
+Авторы:
+Главный разработчик: Тулупов Дмитрий
+Помощник: Маслюков Андрей
+
+Мы на GitHub:
+https://github.com/Masliukov/text_game
+

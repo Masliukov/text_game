@@ -12,12 +12,17 @@ def body():
     surface1 = pygame.Surface((700, 300))
     FPS = 30
 
-    #background_load = pygame.image.load("mikroshema_shemy_chb_126894_1600x1200.jpg")
-    #bg_1 = background_load.convert_alpha()
-    #background = pygame.transform.smoothscale(bg_1, screen.get_size())
+    background_load = pygame.image.load("vetka_minimalizm_chb_125024_1600x1200.jpg")
+    bg_1 = background_load.convert_alpha()
+    background = pygame.transform.smoothscale(bg_1, screen.get_size())
+
+    background_load = pygame.image.load("kabeli_provoda_podsvetka_130357_1920x1080.jpg")
+    bg_1 = background_load.convert_alpha()
+    background2 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
     f1 = pygame.font.Font(None, 36)
     f2 = pygame.font.Font(None, 30)
+    f3 = pygame.font.Font(None, 45)
     text_next = f1.render('Далее', True, (180, 0, 0))
     text_back = f1.render('Назад', True, (180, 0, 0))
     text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
@@ -35,6 +40,14 @@ def body():
 
     def read_q(i):
         with open("questions.txt", "r", encoding="UTF8", errors="ignor") as f:
+            text = f.readlines()
+            try:
+                return text[i - 1].strip()
+            except:
+                print("Error")
+
+    def read_q_i(i):
+        with open("infa.txt", "r", encoding="UTF8", errors="ignor") as f:
             text = f.readlines()
             try:
                 return text[i - 1].strip()
@@ -117,12 +130,14 @@ def body():
         count = 1
         score = 0
         questions_list_answer = []
+        now_s = 'menu'
+
         def draw(self, x, y):
             global count, question_n
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
-            draw_question(self.count)
-            list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
+            #draw_question(self.count)
+            #list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, self.activ_color, (x, y, self.width, self.height))
                 if click[0] == 1:
@@ -149,6 +164,8 @@ def body():
                         Button.TF = None
                         print("answer", input_1.text)
                         check()
+                    elif self.name == 'beg':
+                        Button.now_s = 'test'
 
 
             else:
@@ -195,23 +212,11 @@ def body():
     button_cheek = Button(200, 60, "answer")
     input_1 = InputBox(850, 320, 100, 50)
 
-    l_q()
-    while True:
-        clock_fps.tick(FPS)
-
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            input_1.handle_event(event)
-
-        input_1.update()
-
-        screen.fill((166, 124, 0))
-        #surface1.fill((255, 191, 0))
-        #screen.blit(surface1, (100,  100))
-        #screen.blit(background, (0, 0))
+    def test():
+        # screen.fill((166, 124, 0))
+        # surface1.fill((255, 191, 0))
+        # screen.blit(surface1, (100,  100))
+        screen.blit(background, (0, 0))
 
         button_next.draw(1080, 620)
         button_back.draw(50, 620)
@@ -226,6 +231,59 @@ def body():
         an_is_FT()
         draw_FT_answer()
         blit_t()
+        draw_question(Button.count)
+        list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
+
+    button_beg = Button(250, 50, 'beg')
+    button_donat = Button(180, 50, 'donat')
+
+
+    def menu():
+        screen.blit(background2, (0, 0))
+
+        text_beg = f3.render('Начать тест', True, (180, 0, 0))
+        text_donat = f3.render('Донат', True, (180, 0, 0))
+
+        button_beg.draw(900, 350)
+        button_donat.draw(970, 450)
+
+        screen.blit(text_beg, (935, 360))
+        screen.blit(text_donat, (1005, 460))
+
+        pygame.draw.rect(screen, (102, 178, 178), (100, 100, 600, 500))
+        pygame.draw.rect(screen, (120, 145, 190), (105, 105, 590, 490))
+
+        y = 150
+        text = []
+        print(count_lines('infa.txt'))
+        for i in range(1, count_lines('infa.txt') + 1):
+            text.append(f2.render(f'{read_q_i(i)}', True, (180, 0, 0)))
+
+        for i in text:
+            screen.blit(i, (150, y))
+            y += 50
+
+
+
+
+
+    l_q()
+    while True:
+        clock_fps.tick(FPS)
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            input_1.handle_event(event)
+
+        input_1.update()
+
+        if Button.now_s == 'menu':
+            menu()
+        elif Button.now_s == 'test':
+            test()
 
         pygame.display.update()
 
