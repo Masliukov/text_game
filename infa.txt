@@ -1,9 +1,8 @@
-Ver. 0.14 beta 220415
+Ver. 0.14 beta 220415 GNU GPLv3
+Copyright 2022 Тулупов Дмитрий
 
-Авторы:
 Главный разработчик: Тулупов Дмитрий
 Помощник: Маслюков Андрей
 
 Мы на GitHub:
 https://github.com/Masliukov/text_game
-

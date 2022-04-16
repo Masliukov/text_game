@@ -1,3 +1,6 @@
+# © Copyright 2022 Тулупов Дмитрий, Маслюков Андрей
+# GNU GPLv3
+
 import pygame
 import webbrowser
 import sys
@@ -38,16 +41,21 @@ def body():
     icon_bit = pygame.image.load('icons8-биткоин-100.png')
     qr_bit = pygame.image.load('bit.png')
     qr_eth = pygame.image.load('eth.png')
+    icon_os = pygame.image.load('icons8-открытый-исходный-код-30.png')
+    icon_exit = pygame.image.load('icons8-exit-60.png')
+    icon_right = pygame.image.load('icons8-стрелка-вправо-в-круге-2-64.png')
+    icon_left = pygame.image.load('icons8-стрелка-влево-в-круге-2-64.png')
+    icon_copy = pygame.image.load('icons8-copyright-все-права-защищены-30.png')
+
 
 
     f1 = pygame.font.Font(None, 36)
     f2 = pygame.font.Font(None, 30)
     f3 = pygame.font.Font(None, 45)
     text_next = f1.render('Далее', True, (180, 0, 0))
-    text_back = f1.render('Назад', True, (180, 0, 0))
-    text_list = f1.render("Осталось вопросов", True, (180, 0, 0))
-    text_answer = f1.render("Ваш ответ", True, (180, 0, 0))
-    text_check = f1.render("Ответить", True, (180, 0, 0))
+    text_list = f1.render("Осталось вопросов", True, (234, 255, 242))
+    text_answer = f1.render("Ваш ответ", True, (234, 255, 242))
+    text_check = f1.render("Ответить", True, (234, 255, 242))
 
     def list_questions_text(i):
         text_ost = f1.render(f"{i}", True, (180, 0, 0))
@@ -67,10 +75,8 @@ def body():
                 print("Error")
 
     def draw_question(number):
-        text_question = f2.render(read_q(number), True, (180, 0, 0))
-        surface1.fill((255, 191, 0))
-        surface1.blit(text_question, (100, 100))
-        screen.blit(surface1, (100, 100))
+        text_question = f2.render(read_q(number), True, (234, 255, 242))
+        screen.blit(text_question, (100, 100))
 
     def check():
         if "-" == Button.questions_list_answer[Button.count - 1]:
@@ -113,6 +119,7 @@ def body():
         GREEN = (50, 180, 30)
         RED = (180, 40, 15)
         count = 1
+        c = 1
         for i in Button.questions_list_answer:
             if count % 2 == 1:
                 if i == "+":
@@ -120,7 +127,14 @@ def body():
                     pygame.draw.rect(screen, GREEN, (x+3, y+3, 44, 44), 0)
                 elif i == "-":
                     pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
+                if c >= 5:
+                    y += 50
+                    x = 300
+                    c = 0
                 x += 50
+                c += 1
+
+
             count += 1
 
     def blit_t():
@@ -188,8 +202,8 @@ def body():
 
 
             else:
-                pass
-                #pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
+
+                pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
                 #pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
 
     class Button_child(Button):
@@ -246,7 +260,7 @@ def body():
             pygame.draw.rect(screen, self.color, self.rect, 2)
 
     button_next = Button(150, 60, "next")
-    button_back = Button(150, 60, "back")
+    button_back = Button(58, 58, "back")
     button_cheek = Button(200, 60, "answer")
     input_1 = InputBox(850, 320, 100, 50)
 
@@ -257,11 +271,10 @@ def body():
         screen.blit(background, (0, 0))
 
         button_next.draw(1080, 620)
-        button_back.draw(50, 620)
+        button_back.draw(80, 610)
         button_cheek.draw(850, 400)
         screen.blit(text_list, (850, 100))
         screen.blit(text_next, (1110, 635))
-        screen.blit(text_back, (85, 635))
         screen.blit(text_answer, (850, 250))
         screen.blit(text_check, (895, 415))
         input_1.draw(screen)
@@ -272,6 +285,11 @@ def body():
         draw_question(Button.count)
         list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
 
+        screen.blit(icon_left, (77, 607))
+
+        screen.blit(icon_back, (30, 30))
+
+
     button_link = Button(398, 25, 'link')
     f = 'infa.txt'
     def infa_project():
@@ -281,6 +299,7 @@ def body():
         text = []
         pygame.draw.rect(screen, (185, 255, 210), (100, 100, 500, 500), 1)
         screen.blit(icon_github, (320, 533))
+        screen.blit(icon_os, (480, 143))
         for i in range(1, count_lines('infa.txt') + 1):
             text.append(f2.render(f'{read_q(i, f)}', True, (185, 255, 210)))
 
@@ -288,6 +307,7 @@ def body():
             screen.blit(i, (150, y))
             y += 50
 
+        screen.blit(icon_back, (30, 30))
 
     text_eth = f1.render('0xdF4Ff18541bF13A64Ec5Ce3e3ea2e5615504B58C', True, (185, 255, 210))
     text_bit = f1.render('1Fc8vKzMnHcgtr6mXRQ572jyBNWTpjRwRk', True, (185, 255, 210))
@@ -300,6 +320,9 @@ def body():
         screen.blit(text_bit, (220, 310))
         screen.blit(qr_bit, (250, 470))
         screen.blit(qr_eth, (500, 470))
+
+        screen.blit(icon_back, (30, 30))
+
 
 
 
@@ -339,6 +362,9 @@ def body():
         button_git.draw(500, 580)
         button_pdf.draw(650, 580)
 
+        screen.blit(icon_exit, (30, 30))
+
+
 
     button_exit = Button_child(64, 64, 'exit')
 
@@ -364,7 +390,6 @@ def body():
         elif Button.now_s == 'donat':
             donat()
 
-        screen.blit(icon_back, (30, 30))
         button_exit.draw(30, 30)
 
         pygame.display.update()
