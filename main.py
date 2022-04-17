@@ -29,6 +29,10 @@ def body():
     bg_1 = background_load.convert_alpha()
     background3 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
+    background_load = pygame.image.load("1625573761_20-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-20.png")
+    bg_1 = background_load.convert_alpha()
+    background4 = pygame.transform.smoothscale(bg_1, screen.get_size())
+
     icon_back = pygame.image.load("icons8-стрелка-влево-в-круге-64.png")
     icon_mozg = pygame.image.load('icons8-мозги-32.png')
     icon_cofee = pygame.image.load('icons8-логотип-java-coffee-cup-33.png')
@@ -46,20 +50,21 @@ def body():
     icon_right = pygame.image.load('icons8-стрелка-вправо-в-круге-2-64.png')
     icon_left = pygame.image.load('icons8-стрелка-влево-в-круге-2-64.png')
     icon_copy = pygame.image.load('icons8-copyright-все-права-защищены-30.png')
-
+    icon_fold = pygame.image.load('icons8-папка-32.png')
 
 
     f1 = pygame.font.Font(None, 36)
     f2 = pygame.font.Font(None, 30)
     f3 = pygame.font.Font(None, 45)
-    text_next = f1.render('Далее', True, (180, 0, 0))
+    f4 = pygame.font.Font(None, 50)
+
     text_list = f1.render("Осталось вопросов", True, (234, 255, 242))
     text_answer = f1.render("Ваш ответ", True, (234, 255, 242))
-    text_check = f1.render("Ответить", True, (234, 255, 242))
+    text_check = f1.render("Ответить", True, (98, 254, 169))
 
     def list_questions_text(i):
         text_ost = f1.render(f"{i}", True, (180, 0, 0))
-        screen.blit(text_ost, (950, 160))
+        screen.blit(text_ost, (850, 415))
 
     def count_lines(filename, chunk_size=1 << 13):
         with open(filename, encoding="UTF8", errors="ignor") as file:
@@ -76,7 +81,7 @@ def body():
 
     def draw_question(number):
         text_question = f2.render(read_q(number), True, (234, 255, 242))
-        screen.blit(text_question, (100, 100))
+        screen.blit(text_question, (120, 235))
 
     def check():
         if "-" == Button.questions_list_answer[Button.count - 1]:
@@ -93,7 +98,7 @@ def body():
 
     def score(i):
         text_score = f2.render(f"Ваш счет: {i}", True, (180, 0, 0))
-        screen.blit(text_score, (100, 50))
+        screen.blit(text_score, (150, 50))
 
     def l_q():
 
@@ -102,22 +107,25 @@ def body():
         print(Button.questions_list_answer)
 
     def test_func(i):
-        result = f1.render(f"{i}", True, (180, 0, 0))
-        screen.blit(result, (1090, 330))
+        if i == 'Верно' or i == 'Уже ответили':
+            result = f1.render(f"{i}", True, (98, 254, 169))
+        else:
+            result = f1.render(f"{i}", True, (180, 0, 0))
+        screen.blit(result, (550, 420))
 
     def an_is_FT():
         if Button.TF == True:
-            test_func("Ok")
+            test_func("Верно")
         elif Button.TF == False:
-            test_func("Error")
+            test_func("Не верно")
         elif Button.TF == "+":
             test_func("Уже ответили")
 
     def draw_FT_answer():
-        x = 350
-        y = 30
-        GREEN = (50, 180, 30)
-        RED = (180, 40, 15)
+        x = 785
+        y = 490
+        GREEN = (78, 203, 135)
+        RED = (254, 169, 98)
         count = 1
         c = 1
         for i in Button.questions_list_answer:
@@ -128,12 +136,11 @@ def body():
                 elif i == "-":
                     pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
                 if c >= 5:
-                    y += 50
-                    x = 300
+                    y += 53
+                    x = 732
                     c = 0
-                x += 50
+                x += 53
                 c += 1
-
 
             count += 1
 
@@ -199,11 +206,13 @@ def body():
                         webbrowser.open('https://github.com/Masliukov/text_game', new=2)
                     elif self.name == 'donat':
                         Button.now_s = 'donat'
+                    elif self.name == 'teoria':
+                        Button.now_s = 'teoria_menu'
 
 
             else:
-
-                pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
+                pass
+                #pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
                 #pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
 
     class Button_child(Button):
@@ -215,7 +224,22 @@ def body():
                     pygame.time.delay(150)
                     print("pressed", Button.count)
 
-                    if self.name == 'exit':
+                    if self.name == "next":
+                        Button.TF = None
+                        if Button.count + 2 <= int(count_lines("questions.txt")):
+                            Button.count += 2
+                            input_1.text = ""
+                        else:
+                            print("что то не так")
+                        print(Button.count)
+                    elif self.name == "back":
+                        Button.TF = None
+                        if Button.count - 2 < 0:
+                            print("что то не так")
+                        else:
+                            Button.count -= 2
+                        print(Button.count)
+                    elif self.name == 'exit':
                         if Button.now_s == 'menu':
                             sys.exit()
                         Button.now_s = 'menu'
@@ -239,7 +263,7 @@ def body():
                     self.active = not self.active
                 else:
                     self.active = False
-                self.color = (47, 245, 152) if self.active else (34, 65, 200)
+                self.color = (185, 255, 210) if self.active else (169, 98, 254)
             if event.type == pygame.KEYDOWN:
                 if self.active:
                     if event.key == pygame.K_RETURN:
@@ -259,10 +283,10 @@ def body():
             screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
             pygame.draw.rect(screen, self.color, self.rect, 2)
 
-    button_next = Button(150, 60, "next")
-    button_back = Button(58, 58, "back")
-    button_cheek = Button(200, 60, "answer")
-    input_1 = InputBox(850, 320, 100, 50)
+    button_next = Button_child(58, 58, "next")
+    button_back = Button_child(58, 58, "back")
+    button_cheek = Button(160, 45, "answer")
+    input_1 = InputBox(320, 405, 100, 50)
 
     def test():
         # screen.fill((166, 124, 0))
@@ -270,13 +294,12 @@ def body():
         # screen.blit(surface1, (100,  100))
         screen.blit(background, (0, 0))
 
-        button_next.draw(1080, 620)
+        button_next.draw(650, 610)
         button_back.draw(80, 610)
-        button_cheek.draw(850, 400)
-        screen.blit(text_list, (850, 100))
-        screen.blit(text_next, (1110, 635))
-        screen.blit(text_answer, (850, 250))
-        screen.blit(text_check, (895, 415))
+        button_cheek.draw(340, 500)
+        screen.blit(text_list, (750, 350))
+        screen.blit(text_answer, (170, 420))
+        screen.blit(text_check, (365, 510))
         input_1.draw(screen)
         score(Button.score)
         an_is_FT()
@@ -286,6 +309,7 @@ def body():
         list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
 
         screen.blit(icon_left, (77, 607))
+        screen.blit(icon_right, (647, 607))
 
         screen.blit(icon_back, (30, 30))
 
@@ -335,6 +359,10 @@ def body():
     text_donat = f3.render('Купить авторам кофе', True, (234, 255, 242))
     text_infa = f3.render('О проекте', True, (234, 255, 242))
     text_teoria = f3.render('Начать изучать', True, (185, 255, 210))
+    text_cping = f2.render('ПрофТест 2022', True, (185, 255, 210))
+    text_li = f2.render('GPLv3', True, (185, 255, 210))
+    text_name1 = f4.render('Сетевое и системное', True, (234, 255, 242))
+    text_name2 = f4.render('администрирование', True, (234, 255, 242))
 
 
     button_git = Button_child(100, 100, 'link')
@@ -358,12 +386,46 @@ def body():
         screen.blit(icon_info, (31, 557))
         screen.blit(icon_github_m, (500, 580))
         screen.blit(icon_pdf, (650, 580))
+        screen.blit(icon_copy, (10, 680))
+
+        screen.blit(text_cping, (45, 685))
+        screen.blit(text_li, (1200, 685))
+        screen.blit(text_name1, (300, 50))
+        screen.blit(text_name2, (250, 100))
 
         button_git.draw(500, 580)
         button_pdf.draw(650, 580)
 
         screen.blit(icon_exit, (30, 30))
 
+    text_base = f3.render('Основы администрирования', True, (185, 255, 210))
+    text_network = f3.render('Работа в сетях', True, (185, 255, 210))
+    text_raznoe = f3.render('Разное', True, (185, 255, 210))
+    text_otnas = f3.render('Дополнительный материал от нас', True, (234, 255, 242))
+
+    text_setata1 = f2.render('Ни искусство, ни мудрость', True, (234, 255, 242))
+    text_setata2 = f2.render('не могут быть достигнуты, если им не учиться.', True, (234, 255, 242))
+    text_setata_autor = f2.render('Демокрит', True, (234, 255, 242))
+
+
+    def teoria_menu():
+        screen.blit(background4, (0, 0))
+
+        screen.blit(text_base, (100, 180))
+        screen.blit(text_network, (100, 280))
+        screen.blit(text_raznoe, (100, 380))
+        screen.blit(text_otnas, (100, 480))
+
+        screen.blit(text_setata1, (795, 70))
+        screen.blit(text_setata2, (700, 100))
+        screen.blit(text_setata_autor, (1070, 140))
+
+        screen.blit(icon_fold, (40, 177))
+        screen.blit(icon_fold, (40, 277))
+        screen.blit(icon_fold, (40, 377))
+
+        screen.blit(text_li, (1200, 685))
+        screen.blit(icon_back, (30, 30))
 
 
     button_exit = Button_child(64, 64, 'exit')
@@ -389,6 +451,8 @@ def body():
             infa_project()
         elif Button.now_s == 'donat':
             donat()
+        elif Button.now_s == 'teoria_menu':
+            teoria_menu()
 
         button_exit.draw(30, 30)
 
