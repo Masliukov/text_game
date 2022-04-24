@@ -14,14 +14,15 @@ def body():
 
     screen = pygame.display.set_mode((display_width, display_height))
     pygame.display.set_caption("ПрофТест")
-    surface1 = pygame.Surface((700, 300))
     FPS = 30
 
-    background_load = pygame.image.load("1625573764_13-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-13.png")
+    background_load = pygame.image.load(
+        "1625573764_13-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-13.png")
     bg_1 = background_load.convert_alpha()
     background = pygame.transform.smoothscale(bg_1, screen.get_size())
 
-    background_load = pygame.image.load("1625573749_17-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-17.png")
+    background_load = pygame.image.load(
+        "1625573749_17-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-17.png")
     bg_1 = background_load.convert_alpha()
     background2 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
@@ -29,9 +30,15 @@ def body():
     bg_1 = background_load.convert_alpha()
     background3 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
-    background_load = pygame.image.load("1625573761_20-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-20.png")
+    background_load = pygame.image.load(
+        "1625573761_20-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-20.png")
     bg_1 = background_load.convert_alpha()
     background4 = pygame.transform.smoothscale(bg_1, screen.get_size())
+
+    background_load = pygame.image.load(
+        "1625573769_23-kartinkin-com-p-fon-minimalizm-programmirovanie-krasivie-f-23.jpg")
+    bg_1 = background_load.convert_alpha()
+    background5 = pygame.transform.smoothscale(bg_1, screen.get_size())
 
     icon_back = pygame.image.load("icons8-стрелка-влево-в-круге-64.png")
     icon_mozg = pygame.image.load('icons8-мозги-32.png')
@@ -52,9 +59,9 @@ def body():
     icon_copy = pygame.image.load('icons8-copyright-все-права-защищены-30.png')
     icon_fold = pygame.image.load('icons8-папка-32.png')
 
-
     f1 = pygame.font.Font(None, 36)
     f2 = pygame.font.Font(None, 30)
+    # f25 = pygame.font.Font(None, 37)
     f3 = pygame.font.Font(None, 45)
     f4 = pygame.font.Font(None, 50)
 
@@ -63,8 +70,8 @@ def body():
     text_check = f1.render("Ответить", True, (98, 254, 169))
 
     def list_questions_text(i):
-        text_ost = f1.render(f"{i}", True, (180, 0, 0))
-        screen.blit(text_ost, (850, 415))
+        text_ost = f1.render(f"{i}", True, (18, 255, 210))
+        screen.blit(text_ost, (450, 100))
 
     def count_lines(filename, chunk_size=1 << 13):
         with open(filename, encoding="UTF8", errors="ignor") as file:
@@ -72,21 +79,23 @@ def body():
                        for chunk in iter(lambda: file.read(chunk_size), ''))
 
     def read_q(i, file='questions.txt'):
-        with open(file, "r", encoding="UTF8", errors="ignor") as f:
-            text = f.readlines()
+        with open(file, "r", encoding="UTF8", errors="ignor") as fl:
+            text = fl.readlines()
             try:
                 return text[i - 1].strip()
             except:
                 print("Error")
 
     def draw_question(number):
-        text_question = f2.render(read_q(number), True, (234, 255, 242))
+        if len(read_q(number)) > 45:
+            text_question = f2.render(read_q(number), True, (185, 255, 210))
+        else:
+            text_question = f3.render(read_q(number), True, (185, 255, 210))
         screen.blit(text_question, (120, 235))
 
     def check():
         if "-" == Button.questions_list_answer[Button.count - 1]:
             if str(input_1.text).strip() == str(read_q(Button.count + 1)).strip():
-                print("OK")
                 Button.TF = True
                 Button.score += 1
                 Button.questions_list_answer[Button.count - 1] = "+"
@@ -94,24 +103,22 @@ def body():
                 Button.TF = False
         else:
             Button.TF = "+"
-            print("Вы уже ответили на этот вопрос")
 
     def score(i):
-        text_score = f2.render(f"Ваш счет: {i}", True, (180, 0, 0))
+        text_score = f1.render(f"Ваш счет: {i}", True, (234, 255, 242))
         screen.blit(text_score, (150, 50))
 
     def l_q():
-
+        # Button.questions_list_answer.clear()
         for i in range(count_lines("questions.txt")):
             Button.questions_list_answer.append("-")
-        print(Button.questions_list_answer)
 
     def test_func(i):
         if i == 'Верно' or i == 'Уже ответили':
             result = f1.render(f"{i}", True, (98, 254, 169))
         else:
             result = f1.render(f"{i}", True, (180, 0, 0))
-        screen.blit(result, (550, 420))
+        screen.blit(result, (710, 390))
 
     def an_is_FT():
         if Button.TF == True:
@@ -122,8 +129,8 @@ def body():
             test_func("Уже ответили")
 
     def draw_FT_answer():
-        x = 785
-        y = 490
+        x = 270
+        y = 615
         GREEN = (78, 203, 135)
         RED = (254, 169, 98)
         count = 1
@@ -132,23 +139,19 @@ def body():
             if count % 2 == 1:
                 if i == "+":
                     pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
-                    pygame.draw.rect(screen, GREEN, (x+3, y+3, 44, 44), 0)
+                    pygame.draw.rect(screen, GREEN, (x + 3, y + 3, 44, 44), 0)
                 elif i == "-":
                     pygame.draw.rect(screen, RED, (x, y, 50, 50), 3)
-                if c >= 5:
-                    y += 53
-                    x = 732
                     c = 0
                 x += 53
                 c += 1
-
             count += 1
 
     def blit_t():
         l = int(count_lines("questions.txt") / 2 - Button.score)
         if l == 0:
             pygame.draw.rect(screen, (20, 170, 20), (280, 180, 700, 300), 0)
-            text_win = f1.render("Вы успешно прошли тест", True, (180, 10, 90))
+            text_win = f3.render("Вы успешно прошли тест", True, (180, 10, 90))
             screen.blit(text_win, (450, 300))
 
     class Button:
@@ -164,39 +167,19 @@ def body():
         score = 0
         questions_list_answer = []
         now_s = 'menu'
+        list_v = ['teoria_osnova', 'teoria_network', 'raznoe', 'otnas']
 
         def draw(self, x, y):
-            global count, question_n
             mouse = pygame.mouse.get_pos()
             click = pygame.mouse.get_pressed()
-            #draw_question(self.count)
-            #list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
 
                 if click[0] == 1:
                     pygame.time.delay(150)
-                    print("pressed", Button.count)
-                    if self.name == "next":
-                        Button.TF = None
-                        if Button.count + 2 <= int(count_lines("questions.txt")):
-                            Button.count += 2
-                            input_1.text = ""
-                        else:
-                            print("что то не так")
-                        print(Button.count)
 
-                    elif self.name == "back":
+                    if self.name == "answer":
                         Button.TF = None
-                        if Button.count - 2 < 0:
-                            print("что то не так")
-                        else:
-                            Button.count -= 2
-                        print(Button.count)
-
-                    elif self.name == "answer":
-                        Button.TF = None
-                        print("answer", input_1.text)
                         check()
                     elif self.name == 'beg':
                         Button.now_s = 'test'
@@ -208,12 +191,36 @@ def body():
                         Button.now_s = 'donat'
                     elif self.name == 'teoria':
                         Button.now_s = 'teoria_menu'
-
-
-            else:
-                pass
-                #pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
-                #pygame.draw.rect(screen, self.inactiv_color, (x+5, y+5, self.width-10, self.height-10))
+                    elif self.name == 'osnova':
+                        Button.now_s = 'teoria_osnova'
+                    elif self.name == 'network':
+                        Button.now_s = 'teoria_network'
+                    elif self.name == 'raznoe':
+                        Button.now_s = 'raznoe'
+                    elif self.name == 'otnas':
+                        Button.now_s = 'otnas'
+                    elif self.name == 'scripts':
+                        webbrowser.open('http://www.kavserver.ru/library/shellscriptsunix.shtml', new=2)
+                    elif self.name == 'file_system':
+                        webbrowser.open('https://iit.cs.msu.ru/media/media/educational_materials/%D0%A1%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5_-_%D1%84%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%D1%8B%D0%B5_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B_%D0%9E%D0%A1_Unix_zmAwX5u.pdf', new=2)
+                    elif self.name == 'kernel_driver':
+                        webbrowser.open('http://dmilvdv.narod.ru/Translate/LDD3/Linux_Device_Drivers_3_ru.pdf', new=2)
+                    elif self.name == 'tcp_ip':
+                        webbrowser.open('https://www.redbooks.ibm.com/pubs/pdfs/redbooks/gg243376.pdf', new=2)
+                    elif self.name == 'marsh':
+                        webbrowser.open('http://prog.tversu.ru/net/1012%20routing.pdf', new=2)
+                    elif self.name == 'dns':
+                        webbrowser.open('https://creewick.github.io/study/courses/inet/lectures/4dnsbook.pdf', new=2)
+                    elif self.name == 'email':
+                        webbrowser.open('http://rdv.rosnou.ru/IT433/it_ad_11.pdf', new=2)
+                    elif self.name == 'virt':
+                        webbrowser.open('http://sibnigmi.ru/documents/school/Gochakov.pdf', new=2)
+                    elif self.name == 'data':
+                        webbrowser.open('https://www.marvel.ru/files/1_1407479676.pdf', new=2)
+                    elif self.name == 'analiz':
+                        webbrowser.open('http://simulation.su/uploads/files/default/2014-serebriakova-parshina.pdf', new=2)
+                    elif self.name == 'backup':
+                        webbrowser.open('http://aad.tpu.ru/practice/EMC/Module%2010-adapt.pdf', new=2)
 
     class Button_child(Button):
         def draw(self, x, y):
@@ -222,7 +229,6 @@ def body():
             if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 if click[0] == 1:
                     pygame.time.delay(150)
-                    print("pressed", Button.count)
 
                     if self.name == "next":
                         Button.TF = None
@@ -230,23 +236,28 @@ def body():
                             Button.count += 2
                             input_1.text = ""
                         else:
-                            print("что то не так")
-                        print(Button.count)
+                            pass
                     elif self.name == "back":
                         Button.TF = None
                         if Button.count - 2 < 0:
-                            print("что то не так")
+                            pass
                         else:
                             Button.count -= 2
-                        print(Button.count)
                     elif self.name == 'exit':
+                        # l_q()
                         if Button.now_s == 'menu':
                             sys.exit()
-                        Button.now_s = 'menu'
+                        elif Button.now_s in Button.list_v:
+                            Button.now_s = 'teoria_menu'
+                        else:
+                            Button.now_s = 'menu'
                     elif self.name == 'link':
                         webbrowser.open('https://github.com/Masliukov/text_game', new=2)
                     elif self.name == 'pdf':
                         webbrowser.open('https://doc.lagout.org/operating%20system%20/linux/Nemet.pdf', new=2)
+            else:
+                pass
+                # pygame.draw.rect(screen, (230, 190, 35), (x, y, self.width, self.height), 1)
 
     class InputBox:
 
@@ -275,6 +286,7 @@ def body():
                     else:
                         self.text += event.unicode
                     self.txt_surface = f1.render(self.text, True, self.color)
+
         def update(self):
             width = max(200, self.txt_surface.get_width() + 10)
             self.rect.w = width
@@ -286,36 +298,35 @@ def body():
     button_next = Button_child(58, 58, "next")
     button_back = Button_child(58, 58, "back")
     button_cheek = Button(160, 45, "answer")
-    input_1 = InputBox(320, 405, 100, 50)
+    input_1 = InputBox(480, 375, 100, 50)
 
     def test():
-        # screen.fill((166, 124, 0))
-        # surface1.fill((255, 191, 0))
-        # screen.blit(surface1, (100,  100))
         screen.blit(background, (0, 0))
 
-        button_next.draw(650, 610)
+        button_next.draw(1150, 610)
         button_back.draw(80, 610)
-        button_cheek.draw(340, 500)
-        screen.blit(text_list, (750, 350))
-        screen.blit(text_answer, (170, 420))
-        screen.blit(text_check, (365, 510))
+        button_cheek.draw(500, 480)
+
+        screen.blit(text_list, (350, 50))
+        screen.blit(text_answer, (320, 390))
+        screen.blit(text_check, (525, 490))
+
         input_1.draw(screen)
         score(Button.score)
         an_is_FT()
         draw_FT_answer()
-        blit_t()
         draw_question(Button.count)
+        blit_t()
         list_questions_text(int(count_lines("questions.txt") / 2 - Button.score))
 
         screen.blit(icon_left, (77, 607))
-        screen.blit(icon_right, (647, 607))
+        screen.blit(icon_right, (1147, 607))
 
         screen.blit(icon_back, (30, 30))
 
-
     button_link = Button(398, 25, 'link')
     f = 'infa.txt'
+
     def infa_project():
         screen.blit(background2, (0, 0))
         button_link.draw(148, 498)
@@ -347,9 +358,6 @@ def body():
 
         screen.blit(icon_back, (30, 30))
 
-
-
-
     button_beg = Button(290, 50, 'beg')
     button_donat = Button(345, 50, 'donat')
     button_infa = Button(170, 50, 'infa')
@@ -364,9 +372,9 @@ def body():
     text_name1 = f4.render('Сетевое и системное', True, (234, 255, 242))
     text_name2 = f4.render('администрирование', True, (234, 255, 242))
 
-
     button_git = Button_child(100, 100, 'link')
     button_pdf = Button_child(100, 100, 'pdf')
+
     def menu():
         screen.blit(background2, (0, 0))
 
@@ -407,6 +415,10 @@ def body():
     text_setata2 = f2.render('не могут быть достигнуты, если им не учиться.', True, (234, 255, 242))
     text_setata_autor = f2.render('Демокрит', True, (234, 255, 242))
 
+    button_teoria_osnova = Button(455, 50, 'osnova')
+    button_teoria_network = Button(240, 50, 'network')
+    button_teoria_rznoe = Button(130, 50, 'raznoe')
+    button_teoria_otnas = Button(525, 50, 'otnas')
 
     def teoria_menu():
         screen.blit(background4, (0, 0))
@@ -415,6 +427,11 @@ def body():
         screen.blit(text_network, (100, 280))
         screen.blit(text_raznoe, (100, 380))
         screen.blit(text_otnas, (100, 480))
+
+        button_teoria_osnova.draw(90, 170)
+        button_teoria_network.draw(90, 270)
+        button_teoria_rznoe.draw(90, 370)
+        button_teoria_otnas.draw(90, 470)
 
         screen.blit(text_setata1, (795, 70))
         screen.blit(text_setata2, (700, 100))
@@ -427,6 +444,76 @@ def body():
         screen.blit(text_li, (1200, 685))
         screen.blit(icon_back, (30, 30))
 
+    button_script_comand = Button(515, 50, 'scripts')
+    text_scripts = f3.render('Сценарии и командная оболочка', True, (185, 255, 210))
+    button_file_system = Button(310, 50, 'file_system')
+    text_file_system = f3.render('Файловые системы', True, (185, 255, 210))
+    button_kernel_driver = Button(290, 50, 'kernel_driver')
+    text_kernek_driver = f3.render('Ядро и драйверы', True, (185, 255, 210))
+
+    def teoria_osnovnoe():
+        screen.blit(background5, (0, 0))
+
+        screen.blit(text_scripts, (150, 200))
+        button_script_comand.draw(140, 190)
+        screen.blit(text_file_system, (150, 350))
+        button_file_system.draw(140, 340)
+        screen.blit(text_kernek_driver, (150, 500))
+        button_kernel_driver.draw(140, 490)
+
+        screen.blit(icon_back, (30, 30))
+
+    button_tcp_ip = Button(180, 50, 'tcp_ip')
+    button_marsh = Button(265, 50, 'marsh')
+    button_dns = Button(390, 50, 'dns')
+    button_email = Button(305, 50, 'email')
+    text_tcp = f3.render('Сети tcp/ip', True, (185, 255, 210))
+    text_marsh = f3.render('Маршрутизация', True, (185, 255, 210))
+    text_dns = f3.render('Система доменных имен', True, (185, 255, 210))
+    text_email = f3.render('Электронная почта', True, (185, 255, 210))
+
+    def teoria_network():
+        screen.blit(background5, (0, 0))
+
+        screen.blit(text_tcp, (150, 180))
+        screen.blit(text_marsh, (150, 300))
+        screen.blit(text_dns, (150, 420))
+        screen.blit(text_email, (150, 540))
+        button_tcp_ip.draw(140, 170)
+        button_marsh.draw(140, 290)
+        button_dns.draw(140, 410)
+        button_email.draw(140, 530)
+
+        screen.blit(icon_back, (30, 30))
+
+    button_virt = Button(255, 50, 'virt')
+    button_data = Button(425, 50, 'data')
+    button_analiz = Button(460, 50, 'analiz')
+    button_backup = Button(380, 50, 'backup')
+    text_virt = f3.render('Виртуализация', True, (185, 255, 210))
+    text_data = f3.render('Центры обработки данных', True, (185, 255, 210))
+    text_analiz = f3.render('Анализ производительности', True, (185, 255, 210))
+    text_backup = f3.render('Резервное копирование', True, (185, 255, 210))
+
+
+    def teoria_raznoe():
+        screen.blit(background5, (0, 0))
+
+        screen.blit(text_virt, (150, 180))
+        screen.blit(text_data, (150, 300))
+        screen.blit(text_analiz, (150, 420))
+        screen.blit(text_backup, (150, 540))
+        button_virt.draw(140, 170)
+        button_data.draw(140, 290)
+        button_analiz.draw(140, 410)
+        button_backup.draw(140, 530)
+
+
+        screen.blit(icon_back, (30, 30))
+
+    def teoria_otnas():
+        screen.blit(background5, (0, 0))
+        screen.blit(icon_back, (30, 30))
 
     button_exit = Button_child(64, 64, 'exit')
 
@@ -453,10 +540,19 @@ def body():
             donat()
         elif Button.now_s == 'teoria_menu':
             teoria_menu()
+        elif Button.now_s == 'teoria_osnova':
+            teoria_osnovnoe()
+        elif Button.now_s == 'teoria_network':
+            teoria_network()
+        elif Button.now_s == 'raznoe':
+            teoria_raznoe()
+        elif Button.now_s == 'otnas':
+            teoria_otnas()
 
         button_exit.draw(30, 30)
 
         pygame.display.update()
+
 
 if __name__ == '__main__':
     body()
